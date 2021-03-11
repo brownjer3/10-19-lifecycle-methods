@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './Header'
 import ItemsContainer from './ItemsContainer'
 import CartContainer from './CartContainer'
+import {connect} from 'react-redux'
 
 import {
   BrowserRouter as Router,
@@ -13,18 +14,7 @@ import './App.css';
 class App extends React.Component{
 
   state = {
-    page: "items",
-    items: [],
-    cart: [],
     term: ""
-  }
-
-  changePage = (e) => {
-
-    const page = e.target.id.split("-")[0]
-    this.setState({
-      page: page
-    })
   }
 
   addToCart = (id) => {
@@ -43,16 +33,10 @@ class App extends React.Component{
     fetch("http://localhost:3000/items")
     .then(res => res.json())
     .then(json => {
-      this.setState({items: json})
+      //replace with dispatch
+      this.props.setItems(json)
     })
   }
-
-  addToItems = (item) => {
-    this.setState((prevState) => {
-        return { items: [...prevState.items, item] };
-    });
-  };
-
 
 
 
@@ -62,11 +46,8 @@ class App extends React.Component{
         <Router>
           <Header />
           <Switch>
-            <Route path="/items" component={(stuff) =>  this.state.items.length !== 0 ? 
-              <ItemsContainer stuff={stuff} addToItems={this.addToItems}  addToCart={this.addToCart} items={this.state.items} cart={this.state.cart}/>  
-              : <h1>...Loading</h1> 
-            }  />
-             
+            <Route path="/items" component={(stuff) =>  <ItemsContainer stuff={stuff} addToItems={this.addToItems}  addToCart={this.addToCart} /> 
+            }/>
             <Route path="/cart">
               <CartContainer cart={this.state.cart}/>
             </Route>
@@ -77,5 +58,12 @@ class App extends React.Component{
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setItems: (items) => {
+      dispatch({type: "SET_ITEMS", items: items})
+    }
+  }
+}
 
-export default App;
+export default connect(null, mapDispatchToProps)(App)

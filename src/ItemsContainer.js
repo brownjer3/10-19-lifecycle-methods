@@ -7,6 +7,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import { connect } from 'react-redux'
 
 class ItemsContainer extends React.Component {
 
@@ -29,7 +30,7 @@ class ItemsContainer extends React.Component {
 
       const itemsToDisplay = this.props.items.filter(i => i.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
 
-      return itemsToDisplay.map(item => <Item  key={item.id} cart={this.props.cart}  addToCart={this.props.addToCart} name={item.name} price={item.price} id={item.id} image1={item.image1} image2={item.image2} />) 
+      return itemsToDisplay.map(item => <Item  key={item.id} name={item.name} price={item.price} id={item.id} image1={item.image1} image2={item.image2} />) 
     }
 
     render(){
@@ -41,7 +42,7 @@ class ItemsContainer extends React.Component {
                   { this.displayItems()}
                 </Route>
                 <Route exact path="/items/new">
-                  <ItemForm addToItems={this.props.addToItems} />
+                  <ItemForm />
                 </Route>
                 <Route path="/items/:id"  component={(routeInfo) => {
                   const id = parseInt(routeInfo.match.params.id)
@@ -54,4 +55,8 @@ class ItemsContainer extends React.Component {
     }
 }
 
-export default ItemsContainer 
+const mapStateToProps = (state) => {
+  return state
+}
+
+export default connect(mapStateToProps)(ItemsContainer)

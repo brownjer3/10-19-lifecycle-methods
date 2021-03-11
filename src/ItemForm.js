@@ -1,4 +1,6 @@
 import React from "react";
+import {connect} from 'react-redux'
+import {addToItems} from './actions'
 
 class ItemForm extends React.Component {
   state = {
@@ -81,4 +83,10 @@ class ItemForm extends React.Component {
   }
 }
 
-export default ItemForm;
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     addToItems: (item) => dispatch(addToItems(item))
+//   }
+// }
+
+export default connect(null, {addToItems})(ItemForm)

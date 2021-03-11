@@ -1,0 +1,1 @@
+export const addToItems = (item) => ({type: "ADD_ITEMS", newItem: item})
